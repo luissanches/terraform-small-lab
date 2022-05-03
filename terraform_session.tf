@@ -154,7 +154,15 @@ resource "aws_instance" "terraform_lab_ec2" {
     volume_size           = 8
     delete_on_termination = true
   }
-  user_data = "#!/bin/bash\nsudo yum update -y && sudo yum install -y httpd && sudo systemctl start httpd && sudo systemctl enable httpd && sudo echo \"<h1>Hello world from $(hostname -f)</h1>\" > /var/www/html/index.html"
+
+  user_data = <<-EOF
+              #!/bin/bash
+              yum update -y
+              yum install -y httpd
+              systemctl start httpd
+              systemctl enable httpd
+              echo "<h1>Hello world from $(hostname -f)</h1>" > /var/www/html/index.html
+              EOF
 
   tags = merge(
     local.default_tags,
