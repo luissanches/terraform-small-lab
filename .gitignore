@@ -1,3 +1,5 @@
 node_modules
 terraform/.terraform
 terraform/.terraform.lock.hcl
+*.pem
+~$S Configuration.docx

@@ -1,0 +1,34 @@
+terraform {
+  required_providers {
+    kt-session = {
+      version = "1.0.0"
+      source  = "cisco.com/kt-session-provider/kt-session"
+    }
+
+  }
+  required_version = ">=1.3.1"
+}
+
+provider "kt-session" {
+  user_name = "bernard"
+}
+
+data kt-session_instances all {}
+
+output "available-instances" {
+  value = data.kt-session_instances.all
+}
+
+data kt-session_owner all {}
+
+output "owner" {
+  value = data.kt-session_owner.all
+}
+
+resource "kt-session_instance" "csr" {
+	type = data.kt-session_owner.all.name
+}
+
+output "instances-id" {
+  value = kt-session_instance.csr.id
+}
