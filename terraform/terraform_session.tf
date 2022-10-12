@@ -26,17 +26,17 @@ output "available-instances" {
 
 data kt-session_owner all {}
 
-output "instances-owner" {
+output "owner" {
   value = data.kt-session_owner.all
 }
 
 resource "kt-session_instance" "csr" {
-	type = "router"
+	type = data.kt-session_owner.all.name
 }
 
-output "instances-id" {
-  value = kt-session_instance.csr.id
-}
+# output "instances-id" {
+#   value = kt-session_instance.csr.id
+# }
 
 # locals {
 #   current_region = "us-east-2" #US East (Ohio)

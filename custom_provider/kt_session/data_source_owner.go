@@ -12,25 +12,23 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
+
+type responseOwnerData struct {
+	Status 	string     `json:"status"`
+	Name 		string     `json:"name"`
+}
+
 func dataSourceOwner() *schema.Resource {
 	return &schema.Resource{
 		ReadContext: dataSourceOwnerRead,
 		Schema: map[string]*schema.Schema{
-			"owner": {
-				Type:     schema.TypeList,
+			"status": {
+				Type:     schema.TypeString,
 				Computed: true,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"status": {
-							Type:     schema.TypeString,
-							Computed: true,
-						},
-						"name": {
-							Type:     schema.TypeString,
-							Computed: true,
-						},
-					},
-				},
+			},
+			"name": {
+				Type:     schema.TypeString,
+				Computed: true,
 			},
 		},
 	}
@@ -45,6 +43,7 @@ func dataSourceOwnerRead(ctx context.Context, d *schema.ResourceData, m interfac
 	url := "http://localhost:5000/owner"
 	req, err := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-type", "application/json")
+	req.Close = true
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -56,16 +55,18 @@ func dataSourceOwnerRead(ctx context.Context, d *schema.ResourceData, m interfac
 	defer r.Body.Close()
 
 	
-	var instance map[string]interface{} = nil
+	var instance responseOwnerData
 
 	err = json.NewDecoder(r.Body).Decode(&instance)
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
-	instances := make([]map[string]interface{}, 0)
-	instances = append(instances, instance)
-	if err := d.Set("owner", instances); err != nil {
+	if err := d.Set("status", instance.Status); err != nil {
+		return diag.FromErr(err)
+	}
+
+	if err := d.Set("name", instance.Name); err != nil {
 		return diag.FromErr(err)
 	}
 
