@@ -1,0 +1,19 @@
+{
+	"name": "terraform-small-lab",
+	"version": "1.0.0",
+	"description": "Terraform Small Lab",
+	"main": "index.js",
+	"scripts": {
+		"start": "cd api && flask --app api run"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/luissanches/terraform-small-lab.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/luissanches/terraform-small-lab/issues"
+	},
+	"homepage": "https://github.com/luissanches/terraform-small-lab#readme"
+}
